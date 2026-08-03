@@ -16,20 +16,23 @@ import {
     the reader has something to find out rather than something to confirm. And
     when the text asks them to change a matrix, name the entry they should
     click, not the quantity it stands for — the sandbox shows four boxes, not
-    σ₁ and σ₂. */}
+    σ₁ and σ₂.
+
+    No captions on the embeds: every instruction for handling a panel lives in
+    the body prose, so the Listen narration and the visible text can't disagree.
+    The closing panel is always a blank sandbox. */}
 
 Take any 2×2 matrix you like — any four numbers at all — and ask what it does to
 the unit circle. The answer, every single time, is an ellipse. Never a peanut,
 never an egg, never a shape fatter at one end than the other.
 
 The panel below is a live copy of Warp; it plays itself once so you can watch the
-circle go, and then it's yours. Click any entry of `M` and put whatever you want
-in its place. See if you can produce something that isn't an ellipse.
+circle go, and then it's yours. The dashed outline it leaves behind is where the
+circle started, so you can always see what changed. Click any entry of `M` and
+put whatever you want in its place. See if you can produce something that isn't
+an ellipse.
 
-<WarpEmbed
-  state={SVD_HOOK}
-  caption="The dashed circle is where it started. Type new numbers into M — the ellipse follows."
-/>
+<WarpEmbed state={SVD_HOOK} />
 
 You won't manage it, and I want to dwell for a moment on how odd that is. A
 matrix is four entries you may set quite independently, which is a good deal of
@@ -56,10 +59,7 @@ the same matrix with one row added, `svd(M)`, whose name will make sense shortly
 It reports two numbers, σ₁ and σ₂. Decide what you think they are before you look
 at them; the orange and purple arrows are drawn to help.
 
-<WarpEmbed
-  state={SVD_AXES}
-  caption="σ₁ and σ₂ — and two arrows landing exactly on the ellipse's semi-axes."
-/>
+<WarpEmbed state={SVD_AXES} />
 
 They are the semi-axes. σ₁ is how far the ellipse reaches along its long
 direction, σ₂ how far along its short one. Now drag the animation slider back to
@@ -100,10 +100,7 @@ Change `U` and `S` however you like — any rotation, any two stretches. Watch t
 two directions `svd(C)` reports, and see if you can get them to point anywhere
 interesting.
 
-<WarpEmbed
-  state={SVD_TWOSTEP}
-  caption="Stretch, then spin. Change anything you want; two things refuse to budge."
-/>
+<WarpEmbed state={SVD_TWOSTEP} />
 
 They won't move. Whatever you type, `svd(C)` insists the stretched directions are
 `(1, 0)` and `(0, 1)` — the plain horizontal and vertical — and the line beneath

@@ -1,101 +1,184 @@
 import WarpEmbed from "../WarpEmbed";
-import { EIGEN_RIDE, EIGEN_LINES, EIGEN_ON_LINE, WARP_URL } from "../states";
+import {
+  EIGEN_RIDE,
+  EIGEN_LINES,
+  EIGEN_ON_LINE,
+  EIGEN_ROTATE,
+  EIGEN_ITERATE,
+  EIGEN_BLANK,
+  WARP_URL,
+} from "../states";
 
-{/* ============================================================too===========
-    YOUR STORY — everything down to the first <WarpEmbed> is yours to
-    rewrite in your own voice. The [bracketed] blocks are placeholders
-    sketching one possible arc: why you built Warp, then into the math.
-    ========================================================================= */}
+{/* Prose is synced with the vault script at
+    "_01 Projects/Germinate Internship/Warp/Lesson Scripts/Eigenvectors — Script.md".
+    Edit either side and ask to sync, diffing the two first.
 
-[YOUR STORY, ¶1 — The hook. Perhaps: the moment linear algebra stopped being
-arithmetic for you. A matrix was a wall of numbers, and then — through
-3Blue1Brown, through a Desmos 3D lecture, through teaching — it became a
-*motion*. Something that happens to space.]
+    No captions on the embeds: every instruction for handling a panel lives in
+    the body prose, so the Listen narration and the visible text can't disagree.
+    The closing panel is always a blank sandbox.
 
-[YOUR STORY, ¶2 — Building Warp. You self-studied linear algebra before ever
-taking the course, and built the tool you wished existed: type a matrix,
-watch the plane move. What Desmos does for functions, for transformations.]
+    This piece deliberately opens on the mathematics rather than on how Warp
+    came to exist — that story is told once, in the determinant piece, and does
+    not want telling three times. */}
 
-[YOUR STORY, ¶3 — The turn. Of everything Warp can show, one idea benefits
-most from being *seen* instead of computed: eigenvectors. Textbooks define
-them in one line — Mv = λv — and that line hides everything. Let's look
-instead.]
+The definition of an eigenvector fits on a single line. A vector `v` is an
+eigenvector of a matrix `M` when `M·v = λv` for some number λ.
+
+As definitions go that one is admirably compact, and it is also very nearly
+opaque, because it manages to hide the only thing worth knowing: what these
+vectors *are*. So we will not start from the definition. We will start by
+watching a matrix push the plane around, and see whether anything survives.
 
 ## A matrix moves every vector
 
-Here is a matrix, M, and what it does to the plane. The grid you see isn't
-decoration — it *is* space, and M is warping all of it. The vector v = (1, 0)
-rides along. Press play on the matrix row and watch where v lands.
+Here is a matrix `M` and what it does to the plane. The grid is not decoration —
+it *is* space, and `M` is warping all of it at once. The vector `v = (1, 0)` has
+been put in to ride along. Press play on the matrix row and watch where it ends
+up.
 
-<WarpEmbed
-  state={EIGEN_RIDE}
-  caption="M warps the plane; v = (1, 0) rides the warp. Press ▶ on the matrix row."
-  height={460}
-/>
+<WarpEmbed state={EIGEN_RIDE} height={460} />
 
-Almost every vector gets knocked off its own line. v started pointing due
-east; it lands pointing somewhere new. Rotate the matrix's entries and the
-story repeats — direction in, *different* direction out. That's what a matrix
-does. It moves everything.
+`v` began pointing due east and it finishes pointing somewhere else. That is
+unremarkable, and it is also the general case: hand a matrix a direction and you
+get a different direction back. Edit `v`'s entries and play it again, and again,
+and the same thing keeps happening. A matrix moves everything.
 
 Almost everything.
 
-## The vectors that refuse to turn
+## The directions that survive
 
-Type `eigen(M)` and Warp draws two dashed lines through the origin. They look
-unremarkable. They are not: they are the only two lines in the entire plane
-that the warp leaves *in place*.
+Asking for `eigen(M)` asks Warp for the exceptions. It draws two dashed lines
+through the origin, and at first glance they are two lines among infinitely
+many.
 
-<WarpEmbed
-  state={EIGEN_LINES}
-  caption="eigen(M) draws the invariant lines. Play the warp — the orange and purple vectors stretch but never turn."
-  height={460}
-/>
+<WarpEmbed state={EIGEN_LINES} height={460} />
 
-A vector on one of those lines doesn't get turned when M applies — it only
-gets stretched, by a factor the readout calls λ. Play the animation and watch
-the orange and purple vectors: space swirls around them, and they simply…
-lengthen. Those are the **eigenvectors** of M, and the stretch factors λ are
-its **eigenvalues**.
+They are not. Of all the lines through the origin — and there is one for every
+direction you could pick — those two are the only ones this particular warp
+leaves where they are. A vector lying along one of them does not get turned when
+`M` is applied. It only gets longer or shorter, by a factor Warp labels λ.
 
-## See it with your own vector
+Play the animation and keep your eye on the orange and purple arrows. Space
+swirls around them, and they stay on their lines and change length. Those two
+directions are the **eigenvectors** of `M`, and the two factors are its
+**eigenvalues**.
 
-Don't take the dashed lines' word for it. Here v = (1, 1) sits exactly on an
-eigen-line, and the row u = M·v computes where it lands: (3, 3). Same
-direction. Three times the length. λ = 3, in the flesh.
+Which means the definition we started with is now a description rather than a
+rule. `M·v = λv` says that applying `M` to `v` has the same effect as scaling
+`v` by some number — and "the same effect as scaling" is exactly what it means
+for a vector not to be turned.
 
-<WarpEmbed
-  state={EIGEN_ON_LINE}
-  caption="v = (1, 1) lies on an eigen-line, so M·v = (3, 3) — stretched by λ = 3, never turned."
-  height={460}
-/>
+## Check it with your own vector
 
-Now nudge v off the line — edit it to (1, 0.8) — and watch u swing away from
-v's direction. Put it back and they re-align. The eigen-line is a knife edge,
-and you can feel it.
+There is no need to take the dashed lines' word for any of this. Here `v = (1, 1)`
+sits exactly on one of them, and the row `u = M·v` computes where it lands:
+`(3, 3)`. The same direction, three times as long. So λ = 3, in the flesh.
 
-That is the entire idea. *An eigenvector of M is a vector that M stretches
-but does not turn; the eigenvalue is the stretch.* Everything else — the
-characteristic polynomial, det(M − λI) = 0, the algebra you'll grind through
-on the exam — is the bookkeeping you do to *find* the vectors this article
-just showed you.
+<WarpEmbed state={EIGEN_ON_LINE} height={460} />
+
+Now push `v` off the line — change its second entry to `0.2` — and look at where
+`u` goes. It is no longer parallel to `v`, which we expected. What is worth
+noticing is *which way* it isn't parallel: `u` has been dragged back towards the
+eigen-line. `v` was sitting about 34° away from that line and `u` comes out only
+about 12° away.
+
+There is a tidy reason. Split `v` into the part lying along the eigen-line and
+the part sticking out sideways. `M` triples the first part, being the λ = 3
+direction, and leaves the second part exactly as it was, being the λ = 1
+direction. The sideways part therefore ends up three times smaller *relative* to
+the along-the-line part than it started, which is to say `u` is three times
+closer to the line than `v` was. Put `v` back on the line and the sideways part
+is zero, three times zero is still zero, and `u` lies along `v` again.
+
+So the two eigen-lines are not merely curiosities that survive the warp. They
+organise what happens to everything else. Hold on to that; it is the whole of
+the last section.
+
+And everything else in this corner of the subject — the characteristic
+polynomial, `det(M − λI) = 0`, the algebra you will grind through on a problem
+set — is bookkeeping for *finding* these two lines. The lines are the content.
+
+## When nothing survives
+
+That last section quietly assumed something we ought to check. We found two
+special lines. Must there always be two? Must there be any at all?
+
+Think about what an eigen-line asks for: a direction the transformation declines
+to turn. Then think about a rotation, whose entire job is to turn every
+direction there is.
+
+<WarpEmbed state={EIGEN_ROTATE} height={460} />
+
+The matrix in this panel rotates the plane by about 53°, and `eigen(M)` reports
+no lines whatsoever — only a complex pair, λ = 0.6 ± 0.8i, and a note that there
+are no real eigenvectors. Nothing has gone wrong with the matrix. It simply has
+no direction that survives, because turning every direction is precisely what it
+does. Press play and watch `v` sweep around; there is nowhere it could have
+stopped.
+
+So eigenvectors are not guaranteed, and their number is part of what a matrix
+tells you about itself. A rotation has none. Type a shear into `M` — `1`, `1`,
+`0`, `1` — and exactly one line survives instead of two, with a repeated
+eigenvalue. Type the identity, which moves nothing at all, and *every* direction
+survives.
+
+## Why the lines are worth finding
+
+So far this is a fact about a matrix. Here is why anyone goes looking for it.
+
+Suppose you apply the same matrix over and over, which is what happens whenever
+a matrix describes one step of some process and you want to know where the
+process ends up after many steps. In general that is a lot of arithmetic. On an
+eigen-line it is no arithmetic at all: applying `M` multiplies the length by λ,
+so applying it three times multiplies the length by λ³, and there is nothing
+else to work out.
+
+The panel below has an `M` whose eigenvalues are 1.5 and 0.5, together with
+`C = M·M·M` — the single matrix that applies `M` three times. Before you press
+play, work out what ought to happen to each of the two eigen-arrows.
+
+<WarpEmbed state={EIGEN_ITERATE} height={460} />
+
+The orange arrow, on the λ = 1.5 line, has grown by 1.5³, which is about 3.4.
+The purple one, on the λ = 0.5 line, has shrunk by 0.5³ = 0.125 and is now a
+stub near the origin. Neither has left its line, which we already knew it
+wouldn't.
+
+The part worth keeping is what happened to the gridlines. They have piled up
+along the orange line — which is the same effect you saw one section ago, when a
+single application dragged `u` three times closer to the eigen-line, now applied
+three times over. Each round divides the sideways part by three again, and after
+enough rounds there is essentially nothing left of it. Repeated application
+squashes the whole plane toward whichever eigen-direction has the largest λ,
+because that direction outgrows every other one, and the ratio of the two
+eigenvalues sets how fast it happens.
+
+That is the practical reason eigenvectors are worth finding. They are the
+directions in which repeated application is nothing more than repeated
+multiplication, and the largest eigenvalue is the one that eventually wins.
 
 ## Now it's yours
 
-The sandbox below is the full version of Warp — the same tool every scene in
-this article ran on. Some experiments worth your time:
+A blank copy of Warp. Add a matrix from the **+** menu, then type `eigen(M)`
+into an expression row. If Warp is new to you, the **Tutorial** button gives a
+short tour.
 
-- `eigen` of a **rotation** matrix: nothing survives a turn, so there are no
-  real eigenvectors at all. Warp reports the complex pair.
-- `eigen` of a **shear**: exactly one direction survives. Repeated eigenvalue,
-  one eigen-line.
-- `eigen` of the **identity**: everything survives. Every vector is an
-  eigenvector.
+Some things worth going after:
+
+- A matrix with a **negative** eigenvalue. The line survives, so vectors on it
+  aren't turned aside — but they come back pointing the other way along it.
+  Reconcile that with "not turned" until it sits comfortably.
+- A matrix with an eigenvalue of exactly **0**. That eigen-line is where space
+  gets crushed to nothing. Add `det(M)` and `inv(M)` and see whether they agree
+  with you about what has happened.
+- A matrix whose two eigenvalues are **equal** without it being a multiple of
+  the identity. One line survives where you might have expected two.
+- Take any matrix, build `C = M·M·M·M`, and see how nearly its gridlines fall
+  onto the dominant eigen-line. Then try it with a matrix whose two eigenvalues
+  are close in size, and watch the effect weaken.
+
+<WarpEmbed state={EIGEN_BLANK} height={560} tutorial />
 
 <p className="article-cta">
-  <a href={WARP_URL}>Open the Warp sandbox →</a>
+  <a href={WARP_URL}>Open the full sandbox →</a>
 </p>
-
-[YOUR CLOSER, optional — one paragraph bringing it back to the story: what
-seeing it first did for you when the formal course arrived, and an invitation
-to reach for the picture whenever the symbols go abstract.]

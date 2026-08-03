@@ -27,6 +27,26 @@ export const EIGEN_LINES =
 export const EIGEN_ON_LINE =
   "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIyIiwiMSIsIjEiLCIyIl19LHsiayI6InYiLCJuIjoidiIsImMiOlsiMSIsIjEiXSwic2giOnRydWV9LHsiayI6ImUiLCJzIjoiZWlnZW4oTSkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJ1ID0gTcK3diIsInNoIjp0cnVlfV0sImFjdGl2ZSI6MH0sImQzIjp7InJvd3MiOlt7ImsiOiJlIiwicyI6IiIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
 
+/**
+ * A rotation by ~53°: eigen reports the complex pair λ = 0.6 ± 0.8i
+ * and no real eigen-lines, because a rotation turns every direction.
+ */
+export const EIGEN_ROTATE =
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIwLjYiLCItMC44IiwiMC44IiwiMC42Il19LHsiayI6InYiLCJuIjoidiIsImMiOlsiMSIsIjAiXSwic2giOnRydWV9LHsiayI6ImUiLCJzIjoiZWlnZW4oTSkiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOjB9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
+
+/**
+ * C = M·M·M with λ = 1.5 and 0.5, gridlines only. Three rounds
+ * grow one eigen-arrow to 3.375 and shrink the other to 0.125, and the grid
+ * piles up along the λ₁ line. No extra vector row: the graph palette starts on
+ * the same orange as λ₁, so a plotted vector would compete with the arrow.
+ */
+export const EIGEN_ITERATE =
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIxIiwiMC41IiwiMC41IiwiMSJdfSx7ImsiOiJlIiwicyI6ImVpZ2VuKE0pIiwic2giOnRydWV9LHsiayI6ImUiLCJzIjoiQyA9IE3Ct03Ct00iLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOjIsImciOnRydWV9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
+
+/** A blank sandbox to close the eigenvectors piece. */
+export const EIGEN_BLANK =
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
+
 // --- Cross product (3D): v = (2,1,0) ----------------------------------------
 
 /** v and w flat in the xy-plane, spanning a parallelogram. */
@@ -40,6 +60,18 @@ export const CROSS_UP =
 /** w tilted out of the plane; dot(v, u) = 0 stays true. */
 export const CROSS_TILT =
   "eyJ2IjoxLCJtb2RlIjoiM2QiLCJkMiI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9LCJkMyI6eyJyb3dzIjpbeyJrIjoidiIsIm4iOiJ2IiwiYyI6WyIyIiwiMSIsIjAiXSwic2giOnRydWV9LHsiayI6InYiLCJuIjoidyIsImMiOlsiLTEiLCIyIiwiMSJdLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJ1ID0gY3Jvc3ModiwgdykiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJkb3QodiwgdSkiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
+
+/**
+ * v and w only 4.4° apart, so the parallelogram is a splinter and
+ * cross(v, w) is down to (0, 0, 0.8). Setting w's y from 2.4 to 2 makes w = 2v
+ * exactly and the cross product vanishes.
+ */
+export const CROSS_PARALLEL =
+  "eyJ2IjoxLCJtb2RlIjoiM2QiLCJkMiI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9LCJkMyI6eyJyb3dzIjpbeyJrIjoidiIsIm4iOiJ2IiwiYyI6WyIyIiwiMSIsIjAiXSwic2giOnRydWV9LHsiayI6InYiLCJuIjoidyIsImMiOlsiNCIsIjIuNCIsIjAiXSwic2giOnRydWV9LHsiayI6ImUiLCJzIjoidSA9IGNyb3NzKHYsIHcpIiwic2giOnRydWV9LHsiayI6ImUiLCJzIjoibm9ybSh1KSIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
+
+/** A blank 3D sandbox to close the cross-product piece. */
+export const CROSS_BLANK =
+  "eyJ2IjoxLCJtb2RlIjoiM2QiLCJkMiI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
 
 // --- Determinant. All five verified live against production warp.us.com. ----
 

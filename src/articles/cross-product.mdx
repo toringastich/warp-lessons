@@ -1,69 +1,134 @@
 import WarpEmbed from "../WarpEmbed";
-import { CROSS_FLAT, CROSS_UP, CROSS_TILT, WARP_URL } from "../states";
+import {
+  CROSS_FLAT,
+  CROSS_UP,
+  CROSS_TILT,
+  CROSS_PARALLEL,
+  CROSS_BLANK,
+  WARP_URL,
+} from "../states";
 
-{/* Draft — tighten or personalize freely; structure mirrors the
-    eigenvectors article. */}
+{/* Prose is synced with the vault script at
+    "_01 Projects/Germinate Internship/Warp/Lesson Scripts/The Cross Product — Script.md".
+    Edit either side and ask to sync, diffing the two first.
 
-The cross product is usually taught as a formula with a mnemonic — a
-determinant of a strange matrix with î, ĵ, k̂ jammed into the top row. The
-formula is true. It is also the least illuminating possible answer to the
-question the cross product actually addresses, which is about a *shape*.
+    No captions on the embeds: every instruction for handling a panel lives in
+    the body prose, so the Listen narration and the visible text can't disagree.
+    The closing panel is always a blank sandbox — 3D here, and deliberately
+    without the Tutorial button, since the tour starts by switching to 2D. */}
+
+The cross product is usually introduced as a formula: the determinant of a
+peculiar matrix with î, ĵ and k̂ written across the top row. The formula is
+correct, and it computes the right thing. It is also close to the least
+illuminating available answer to the question the cross product exists to
+answer — which is a question about a shape.
 
 ## Two vectors span a parallelogram
 
-Here are v = (2, 1, 0) and w = (−1, 2, 0), both lying flat in the xy-plane.
-Together they span a parallelogram — the shaded patch between them. Drag to
-orbit the scene and look at it from every side.
+Here are `v = (2, 1, 0)` and `w = (−1, 2, 0)`, both lying flat in the xy-plane.
+Any two vectors drawn from the same point span a parallelogram, and the shaded
+patch between these two is theirs. Drag inside the panel to orbit the scene and
+look at the patch from a few angles.
 
-<WarpEmbed
-  state={CROSS_FLAT}
-  caption="v and w span a parallelogram, flat in the xy-plane. Drag to orbit."
-  height={480}
-/>
+<WarpEmbed state={CROSS_FLAT} height={480} />
 
-Every question the cross product answers starts with this patch: **how big is
-it, and which way does it face?**
+There are two things worth measuring about that patch, and between them they
+exhaust what there is to say about it: **how big it is, and which way it faces.**
+Its area, and the plane it lies in.
+
+The area is a single number, so that half is easy to record. The plane is more
+awkward — a plane in three dimensions is not the sort of thing you write down as
+one quantity. But there is a way around it. Rather than describing the plane,
+describe the one direction *perpendicular* to it. A single perpendicular
+direction pins a plane down completely, and a direction is just a vector.
+
+So we want to package two facts, an area and a perpendicular direction, into one
+object. A vector will take both: let its length be the area, and let it point
+along the perpendicular.
 
 ## One vector answers both
 
-The row u = cross(v, w) computes (0, 0, 5): a vector pointing straight up,
-perpendicular to both v and w — perpendicular, in fact, to the whole patch.
+That is exactly what the cross product is. The row `u = cross(v, w)` computes
+`(0, 0, 5)`.
 
-<WarpEmbed
-  state={CROSS_UP}
-  caption="u = cross(v, w) = (0, 0, 5), perpendicular to the patch — and norm(u) = 5 is exactly its area."
-  height={480}
-/>
+<WarpEmbed state={CROSS_UP} height={480} />
 
-Its length is no accident. norm(u) = 5 is *exactly the parallelogram's area*.
-And its direction follows the right-hand rule: curl your fingers from v
-toward w, and your thumb points along u. One vector, both answers — size as
-length, orientation as direction.
+It points straight up — perpendicular to `v`, perpendicular to `w`, and so
+perpendicular to the whole patch. That is the "which way does it face" half. And
+`norm(u)` reads 5, which is precisely the parallelogram's area. That is the "how
+big is it" half. One vector, both answers, exactly as we asked.
+
+The direction carries one further convention, because "perpendicular" leaves two
+choices: up and down. The cross product settles it by the right-hand rule. Curl
+the fingers of your right hand from `v` toward `w`, and your thumb points along
+`u`. This is worth testing — swap the two arguments, so the row reads
+`cross(w, v)`, and `u` turns to point the other way. The patch has not changed;
+you are simply reading it from the other side.
 
 ## It follows the parallelogram
 
-Tilt w out of the plane — w = (−1, 2, 1) — and the parallelogram tilts with
-it. The cross product follows: u = (1, −2, 5) leans exactly enough to stay
-perpendicular. The row dot(v, u) = 0 is the receipt. Perpendicularity isn't a
-coincidence of the first example; it's built into the definition.
+If `u` is genuinely a description of the patch, then it should track the patch
+when the patch moves. Tilt `w` up out of the plane — change its third entry to
+`1`, so `w = (−1, 2, 1)` — and the parallelogram tilts with it.
 
-<WarpEmbed
-  state={CROSS_TILT}
-  caption="Tilt w out of the plane and u leans to stay perpendicular — dot(v, u) = 0, always. Edit w's entries and watch."
-  height={480}
-/>
+<WarpEmbed state={CROSS_TILT} height={480} />
+
+`u` has become `(1, −2, 5)`, leaning over by exactly enough to stay
+perpendicular. The row `dot(v, u)` reads 0, and a dot product of zero is
+precisely the statement that two vectors meet at a right angle, so that row is a
+receipt: perpendicularity is not a lucky feature of the first example, it is
+built into what the cross product computes.
+
+Keep editing `w`'s entries and watch both facts survive. `u` stays perpendicular
+to the patch, and its length stays equal to the patch's area.
+
+## When the parallelogram disappears
+
+One case is left, and it turns out to give the cross product a second job.
+
+Swing `w` around until it points nearly the same way as `v`. The parallelogram
+grows thinner as you go, because you are closing the angle between its two
+sides. In the panel below the two vectors are about four degrees apart and the
+patch is a splinter: `norm(u)` has fallen to 0.8.
+
+<WarpEmbed state={CROSS_PARALLEL} height={480} />
+
+Now make them exactly parallel. `w` reads `(4, 2.4, 0)`; change the `2.4` to
+`2` and `w` becomes exactly twice `v`. The patch loses its last scrap of area,
+and `u` becomes the zero vector — it vanishes from the scene altogether, because
+there is no longer a plane for it to be perpendicular to.
+
+That is more useful than it may appear. `cross(v, w) = 0` is a test, and what it
+tests is whether two vectors lie along the same line. It also explains the
+formula for the length, which I have been quietly relying on. The area of a
+parallelogram is base times height, and for these two sides that comes to
+|v||w|sinθ, where θ is the angle between them. As θ closes to zero the sine goes
+with it, and so does the area, and so does `u`. When θ is a right angle the sine
+is 1 and the area is simply |v||w|.
 
 ## Now it's yours
 
-Two experiments to close the loop:
+A blank copy of Warp, in 3D. Add two vectors from the **+** menu and type
+`cross(v, w)` into an expression row.
 
-- Make v and w **parallel** and the parallelogram collapses to a line — the
-  cross product returns the zero vector. No patch, no normal.
-- Make them **perpendicular unit vectors** and the area is exactly 1 — the
-  cross product of two axes is the third axis.
+Some things worth going after:
 
-The cross product is the parallelogram, wearing a vector costume.
+- Cross two perpendicular unit vectors — `(1, 0, 0)` and `(0, 1, 0)`. The area
+  is exactly 1, and the answer is the third axis. That is where the familiar
+  î × ĵ = k̂ comes from, and it is a special case rather than a definition.
+- Put `cross(v, w)` and `cross(w, v)` in two rows at once and compare them. Same
+  length, opposite direction.
+- Double the length of `v` and watch what the area does. Then double both `v`
+  and `w` and watch it again.
+- Add a third vector and compute `dot(u, cross(v, w))`. That number is the
+  volume of the box the three of them span, and it is zero exactly when all
+  three lie in one common plane — the three-dimensional echo of a parallelogram
+  with no area.
+
+The cross product, in the end, is a parallelogram packaged as a vector.
+
+<WarpEmbed state={CROSS_BLANK} height={560} />
 
 <p className="article-cta">
-  <a href={WARP_URL}>Open the Warp sandbox →</a>
+  <a href={WARP_URL}>Open the full sandbox →</a>
 </p>

@@ -15,151 +15,172 @@ import {
     older "Determinant Lesson — Narration (proposed).md" (now superseded) drifted
     apart in both directions before anyone noticed.
 
-    Captions live in the body prose here, not on the embeds, so the Listen
-    narration and the visible text can't disagree. */}
+    No captions on the embeds: every instruction for handling a panel lives in
+    the body prose, so the Listen narration and the visible text can't disagree.
+    The closing panel is always a blank sandbox. */}
 
-A 2×2 matrix is just four numbers. But it is also a linear transformation:
-each column is a vector, and together they warp the gridlines of 2-D space.
-The determinant is a fifth number, built from those four — and it carries a
-startling amount of meaning. It tells you whether the transformation stretches
-space, flips it, flattens it, or can be undone at all. Four numbers in, one
-number out, and somehow it knows everything. How?
+A 2×2 matrix is four numbers. It is also a linear transformation: each column
+is a vector, and the two of them together warp the gridlines of the plane.
+
+Out of those four numbers one can build a fifth, called the determinant, and
+this fifth number answers a surprising spread of questions. Whether the
+transformation stretches space or shrinks it. Whether it turns space over.
+Whether it flattens space onto a line. Whether it can be undone. That is a
+great deal to ask of one number, and the reason one number can manage it is
+that the four questions are not really four questions. Seeing why is the point
+of this piece.
 
 My name is Torin, and I just graduated from high school. In my senior calculus
-class we used determinants mostly for symbol-pushing — a formula, a means to an
-end. Then 3Blue1Brown's videos showed me that a determinant is far more than a
-formula, and I wanted to bring that kind of visual, hands-on intuition into a
-sandbox you can actually play in, the way you play in Desmos. That's why I
-built Warp, and why I wrote this lesson to teach with it.
+class we used determinants mostly for symbol-pushing — a formula to apply, a
+means to an end. Then 3Blue1Brown's videos showed me that a determinant is a
+piece of geometry rather than a piece of arithmetic, and I wanted somewhere to
+handle that geometry directly, the way you handle a function in Desmos. That is
+why I built Warp, and why I am teaching with it here.
 
-By the end you won't have memorized a single formula, but you'll have a strong,
-almost physical sense of what a determinant is. You'll get there the same way I
-taught myself linear algebra: by watching it move, and by changing things
-yourself. Every diagram below is a live copy of Warp — so don't just read it.
-Grab it, type in it, break it.
+Every diagram below is a live copy of Warp. You can type into all of them, and
+you will get considerably more out of this if you do.
 
 ## The one number is an area
 
-Start in two dimensions. A matrix takes the humble unit square — one unit wide,
-one unit tall, area exactly 1 — and warps it into a parallelogram. In the panel
-below, the matrix `M` is doing exactly that: the shaded patch is where the unit
-square lands, and the row labelled `det(M)` reports a single number for it. To
-start, that number is 6.
+Start in the plane. A matrix takes the unit square — one unit wide, one unit
+tall, area exactly 1 — and carries it to a parallelogram. In the panel below
+`M` is doing precisely that: the shaded patch is where the unit square has
+landed, and the row beneath it reports `det(M)`, which to start reads 6.
 
 <WarpEmbed state={DET_AREA} />
 
-That number is the punchline of the whole lesson: **the determinant is the
-factor by which the transformation scales area.** The unit square began with
-area 1, so the determinant is simply the area of the parallelogram it becomes.
+The square we began with had area 1, and the parallelogram it became has area
+6. So `det(M)` is not merely *associated* with that area — it is that area. And
+because the square started at area 1, the same number is also a *factor*:
+whatever region you hand this transformation, it comes back six times larger.
+That is the whole content of the determinant. **It is the factor by which a
+transformation scales area.**
 
-See it for yourself. Click any entry of `M` and type a new value — the
-parallelogram stretches or shears, and `det(M)` moves right along with its
-area. Try making `M` have a smaller determinant, then try making a larger one!
-Keep experimenting right here, or open the scene in a full window if you'd like
-more room.
+This is worth confirming rather than believing. Click any entry of `M` and type
+something else. The patch shears or stretches, and `det(M)` moves with it. Try
+for a matrix with a small determinant, then one with a large determinant, and
+watch the patch shrink and swell to match.
 
-## Drive it to zero, and straight past it
+## Zero, and the far side of zero
 
-If the determinant is an area, what would it mean for it to be *zero*? An area
-of zero is a shape with no interior — something crushed perfectly flat.
+If the determinant is an area, then we ought to ask what it would mean for the
+determinant to be zero. An area of zero is a region with no interior —
+something crushed perfectly flat.
 
-The matrix in the next panel starts with a determinant of −1. Press play and
-watch the transformation unfold gradually; replay it as many times as you like,
-or grab the slider on the right and scrub to any moment in between. Halfway
-through, the whole grid thins to a single line — that's the instant the
-determinant passes through zero, where two-dimensional space has been flattened
-onto one dimension. Keep going and space reopens on the far side,
-mirror-reversed.
+The matrix in the next panel has determinant −1, and its play button walks the
+transformation gradually from where it starts to where it finishes. Watch the
+grid on the way. You can replay it as often as you like, or drag the slider and
+stop anywhere in the middle.
 
 <WarpEmbed state={DET_FLIP} />
 
-That flip is the second thing a determinant tells you: **orientation.** A
-positive determinant keeps space oriented the way it started; a negative one
-turns it inside out, the way a mirror swaps left and right; zero is the
-knife-edge between them, the moment space is squeezed so hard it loses a
-dimension. So the determinant's size tells you *how much* area changed, and its
-sign tells you *whether space got flipped* along the way. Try retyping the
-matrix and replaying — some transformations flip, some don't.
+Halfway through, the entire grid thins to a single line. That is the instant the
+determinant passes through zero: the plane has been flattened onto one
+dimension, and every region in it has been left with no area at all. Carry on
+and space reopens on the far side, mirror-reversed.
 
-## In three dimensions, it's a volume
+Which gives us the second thing the determinant knows, and it arrives for free
+with the first. A negative area is a peculiar object if you think of area as a
+quantity, and a perfectly sensible one if you think of it as area *together
+with an orientation*. A positive determinant leaves space oriented the way it
+was. A negative one turns space over, the way a mirror exchanges left and
+right. Zero is the knife-edge between them, where space has been squeezed hard
+enough to lose a dimension. The size of the determinant tells you how much the
+area changed; its sign tells you whether space was turned over on the way.
+Retype the matrix and play it again — some transformations turn space over and
+some don't.
 
-None of that was special to the flat plane. Step up to three dimensions and the
-unit square becomes the unit *cube*, and the determinant becomes the factor by
-which the transformation scales **volume**.
+## In three dimensions it is a volume
 
-{/* No `zoom` override: the default wide framing shows the xyz axes, which is
-    the point of the reader's first 3D scene. */}
+None of that was special to the plane. In three dimensions the unit square
+becomes the unit *cube*, area becomes volume, and the determinant becomes the
+factor by which volume is scaled. Nothing else about the argument changes.
+
 <WarpEmbed state={DET_VOLUME} height={520} />
 
 Drag inside the panel to orbit the scene. The cube of volume 1 has landed as a
-slanted box (called a parallelepiped) and its volume is exactly what `det(M)`
-reports (it begins at 2). A determinant of zero here would mean the box has been
-crushed flat into a plane, a line, or a single point: volume gone.
+slanted box — a parallelepiped — and its volume is what `det(M)` reports, which
+begins at 2. A determinant of zero here would mean that box had been crushed
+flat onto a plane, or a line, or a single point: volume gone.
 
-Now make it yours. Change the numbers in the matrix, press play, and watch the
-box — and its volume, the determinant — respond. It's the same story as before,
-with one more dimension of room to move in.
+Change the entries, press play, and watch the box and its volume move together.
+It is the same idea as before, with one more direction to move in.
 
 ## Why det(A·B) = det(A) · det(B)
 
-Here's a fact that looks like algebra but is really geometry. Do one
-transformation, then another. The first scales area by its determinant; the
-second scales *that* by its own determinant. Scalings simply multiply — so the
-determinant of the combined transformation has to be the product of the two.
-Mathematicians can grind that out with a page of algebra, or you can just watch
-it happen.
+Here is a fact that looks like algebra and is really geometry. Apply one
+transformation and then apply another. The first scales area by its
+determinant; the second scales whatever it is handed by *its* determinant. Two
+scalings applied in turn simply multiply. So the determinant of the combined
+transformation has no choice but to be the product of the two.
+
+That argument is already complete. What I would rather do than defend it is let
+you watch it happen.
 
 <WarpEmbed state={DET_COMPOSE} height={520} />
 
-The panel above has three rows: `M`, `N`, and their product `C = M·N`. **`C`
-shows both matrices at once** — the single transformation you get by doing `N`
-first and then `M`. Its play button walks through that combination one step at a
-time: first `N` warps space, scaling area by its determinant, then `M` lands on
-top, scaling by its. Watch the running area grow by `N`'s factor, then by
-`M`'s — and land exactly on the determinant of `C`. To start, `det(M)` is 2 and
-`det(N)` is 3, and sure enough `det(C)` is 6.
+The panel above has three rows: `M`, `N`, and their product `C = M·N`. `C` is
+the single transformation you get by doing `N` first and `M` second, and its
+play button walks through that combination one factor at a time — first `N`
+warps space, scaling area by its determinant, then `M` lands on top of the
+result, scaling by its own. To start, `det(M)` is 2, `det(N)` is 3, and
+`det(C)` is 6.
 
-To pull the two apart, click the small circle to the left of `M`, or of `N`.
-**Toggling one of them on makes just that single matrix warp space**, so you can
-read its determinant on its own — then switch back to `C` to see them combined
-again. However you slice it, the determinant of the product is the two
-determinants multiplied. That's the whole proof, and you can watch it hold for
-any numbers you type. Feeling ambitious? Press the plus button to add a third
-matrix and fold it into the product too.
+To take the product apart, click the small circle to the left of `M`, or of
+`N`. That makes just the one matrix warp space, so you can read its determinant
+on its own; clicking back on `C` puts them together again. However you
+rearrange the numbers, the determinant of the product is the two determinants
+multiplied, and being able to watch that hold for anything you type is a more
+convincing kind of proof than a page of algebra. If you want a harder case, the
+plus button will add a third matrix to fold into the product.
 
-## The payoff: when can you undo a matrix?
+## When can a matrix be undone?
 
-Now the question the whole lesson has been circling: when can a transformation
-be undone? A transformation is *invertible* when every landing spot came from
-exactly one starting point — so you can always retrace your steps.
+Now the question this piece has been circling. A transformation can be undone
+when every landing spot came from exactly one starting point, since only then is
+there something unambiguous to go back to.
+
+Consider what a determinant of zero does to that requirement.
 
 <WarpEmbed state={DET_INVERT} />
 
-Look at what a zero determinant does to that. In the panel, `det(M)` is 0 and
-the grid has collapsed onto a single line. Every point on that line is now a
-pile-up of a whole line's worth of starting points, stacked on top of one
-another. Which one did you come from? There's no way to tell — the information
-is gone. The row `inv(M)` says it outright: not invertible.
+In the panel `det(M)` is 0 and the grid has collapsed onto a single line. Pick
+any point on that line. A whole line's worth of starting points has been mapped
+onto it, stacked one on top of another, and nothing in the picture distinguishes
+them from each other. Which one did you come from? The question has no answer,
+because the information that would have answered it was destroyed in the
+flattening. The row `inv(M)` says as much outright: not invertible.
 
-That's the punchline the subject rests on: **a matrix is invertible exactly
-when its determinant is not zero.** Not a rule to memorize — something you just
-watched happen. A zero determinant flattens space, flattening destroys
-information, and destroyed information can't be recovered. One number — an area,
-a volume — told you whether the transformation could be undone before you ever
-tried. Nudge an entry so the determinant leaves zero, and watch `inv(M)` spring
-back to life.
+So a matrix can be undone exactly when its determinant is not zero. I would
+rather you didn't file that away as a rule. A determinant of zero means space
+was flattened; flattening loses information; lost information cannot be
+recovered. Each of those steps is unremarkable on its own, and together they
+are the entire reason. Nudge an entry so the determinant leaves zero, and watch
+`inv(M)` come back to life.
+
+Notice, too, that we have now answered all four of the questions from the
+opening with the same number — because, as promised, they were never four
+questions. How much does a transformation scale area? The determinant. Does it
+turn space over? The sign of the determinant. Does it flatten space? The
+determinant is zero. Can it be undone? The determinant is not zero.
 
 ## Now it's yours
 
-Everything above ran on Warp — and here's a blank one, entirely yours. Add a
-matrix from the **+** menu, type `det(M)` into a new row, and experiment. New
-here? Press **Tutorial** for a quick tour. A few challenges worth trying:
+A blank copy of Warp. Add a matrix from the **+** menu, type `det(M)` into an
+expression row, and see what you can find out. If Warp is new to you, the
+**Tutorial** button gives a short tour.
 
-- Find a matrix with determinant 1 that *isn't* the identity — a shear. It
-  moves every vector, yet changes no area at all.
-- Push a determinant below zero and play the animation to feel the flip.
-- Switch to 3D, type a `3×3` matrix, and hunt for the determinant hitting
-  zero — the moment the box goes flat.
+A few things worth going after:
+
+- A matrix with determinant exactly 1 that isn't the identity. A shear will do
+  it: every vector moves, and no area changes at all, which is worth sitting
+  with for a moment.
+- A matrix with determinant 0 in which none of the four entries is 0. Flatness
+  is a relationship between the columns, not a property of any single number.
+- Push a determinant below zero and scrub the slider slowly through the middle,
+  to catch the moment the grid passes through flat.
+- Switch to 3D and hunt for a `3×3` matrix whose determinant is zero — the
+  instant the box goes flat. Then ask `inv(M)` what it makes of it.
 
 <WarpEmbed state={DET_BLANK} height={560} tutorial />
 
