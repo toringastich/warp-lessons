@@ -112,12 +112,15 @@ export const SVD_AXES =
   "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIxLjYiLCIxLjEiLCItMC40IiwiMS40Il19LHsiayI6ImUiLCJzIjoiY2lyY2xlKCkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJzdmQoTSkiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOjAsImciOnRydWV9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
 
 /**
- * C = U·S (stretch, then spin). Its input axes are stuck on x and y
- * and its columns always come out perpendicular — which is why one rotation
- * isn't enough. C = [[1.5,-0.8],[2,0.6]], σ = 2.5 and 1, "Vᵀ spins 0°".
+ * C = U·S — stretch, then spin. The two stretches are sliders feeding
+ * diag(s1, s2), so the reader can sweep them continuously and S can never stop
+ * being a pure stretch (four editable cells could). Whatever they do, svd(C)
+ * keeps reporting the stretched directions as the coordinate axes and the
+ * opening rotation as 0° — or a quarter turn, when s2 passes s1 and the two
+ * singular values trade places.
  */
 export const SVD_TWOSTEP =
-  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJVIiwiYyI6WyIwLjYiLCItMC44IiwiMC44IiwiMC42Il19LHsiayI6Im0iLCJuIjoiUyIsImMiOlsiMi41IiwiMCIsIjAiLCIxIl19LHsiayI6ImUiLCJzIjoiQyA9IFXCt1MiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJjaXJjbGUoKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6InN2ZChDKSIsInNoIjp0cnVlfV0sImFjdGl2ZSI6MiwiZyI6dHJ1ZX0sImQzIjp7InJvd3MiOlt7ImsiOiJlIiwicyI6IiIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJVIiwiYyI6WyIwLjYiLCItMC44IiwiMC44IiwiMC42Il19LHsiayI6ImUiLCJzIjoiczEgPSAyLjUiLCJzaCI6dHJ1ZSwibW4iOiIwIiwibXgiOiI0In0seyJrIjoiZSIsInMiOiJzMiA9IDEiLCJzaCI6dHJ1ZSwibW4iOiIwIiwibXgiOiI0In0seyJrIjoiZSIsInMiOiJTID0gZGlhZyhzMSwgczIpIiwic2giOnRydWV9LHsiayI6ImUiLCJzIjoiQyA9IFXCt1MiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJjaXJjbGUoKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6InN2ZChDKSIsInNoIjp0cnVlfV0sImFjdGl2ZSI6NCwiZyI6dHJ1ZX0sImQzIjp7InJvd3MiOlt7ImsiOiJlIiwicyI6IiIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
 
 /**
  * C = U·S·Vt with S = diag(3, 1) and both rotations exact 3-4-5
@@ -135,11 +138,12 @@ export const SVD_DET =
   "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIxLjkyIiwiMC40NCIsIjEuNTYiLCIxLjkyIl19LHsiayI6ImUiLCJzIjoiY2lyY2xlKCkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJzdmQoTSkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJkZXQoTSkiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOjB9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
 
 /**
- * S = diag(3, 0.2): a sliver of an ellipse, still invertible. Typing 0
- * into S's corner collapses it onto a line and inv(C) gives up.
+ * The full three-move form with the stretches on sliders: dragging s2 down to 0
+ * flattens the ellipse continuously, which is the point of a section arguing
+ * for a dial rather than a switch. s1 = 30 with s2 = 0.1 puts det(C) back at 3.
  */
 export const SVD_RANK =
-  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJVIiwiYyI6WyIwLjYiLCItMC44IiwiMC44IiwiMC42Il19LHsiayI6Im0iLCJuIjoiUyIsImMiOlsiMyIsIjAiLCIwIiwiMC4yIl19LHsiayI6Im0iLCJuIjoiVnQiLCJjIjpbIjAuOCIsIjAuNiIsIi0wLjYiLCIwLjgiXX0seyJrIjoiZSIsInMiOiJDID0gVcK3U8K3VnQiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJjaXJjbGUoKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6InN2ZChDKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6ImRldChDKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6ImludihDKSIsInNoIjp0cnVlfV0sImFjdGl2ZSI6MywiZyI6dHJ1ZX0sImQzIjp7InJvd3MiOlt7ImsiOiJlIiwicyI6IiIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJVIiwiYyI6WyIwLjYiLCItMC44IiwiMC44IiwiMC42Il19LHsiayI6Im0iLCJuIjoiVnQiLCJjIjpbIjAuOCIsIjAuNiIsIi0wLjYiLCIwLjgiXX0seyJrIjoiZSIsInMiOiJzMSA9IDMiLCJzaCI6dHJ1ZSwibW4iOiIwIiwibXgiOiI0In0seyJrIjoiZSIsInMiOiJzMiA9IDAuMiIsInNoIjp0cnVlLCJtbiI6IjAiLCJteCI6IjMifSx7ImsiOiJlIiwicyI6IlMgPSBkaWFnKHMxLCBzMikiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJDID0gVcK3U8K3VnQiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJjaXJjbGUoKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6InN2ZChDKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6ImRldChDKSIsInNoIjp0cnVlfSx7ImsiOiJlIiwicyI6ImludihDKSIsInNoIjp0cnVlfV0sImFjdGl2ZSI6NSwiZyI6dHJ1ZX0sImQzIjp7InJvd3MiOlt7ImsiOiJlIiwicyI6IiIsInNoIjp0cnVlfV0sImFjdGl2ZSI6bnVsbH19";
 
 /**
  * 3D: the unit sphere onto an ellipsoid, σ = 2.532 / 1.347 / 0.879,

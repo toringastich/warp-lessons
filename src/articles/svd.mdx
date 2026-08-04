@@ -56,8 +56,8 @@ That is an encouraging thought, because it means the ellipse in the last panel i
 carrying only a few numbers' worth of information — and if we can find those
 numbers, we will have found what the matrix is really doing. The panel below is
 the same matrix with one row added, `svd(M)`, whose name will make sense shortly.
-It reports two numbers, σ₁ and σ₂. Decide what you think they are before you look
-at them; the orange and purple arrows are drawn to help.
+It reports two numbers, σ₁ and σ₂. Decide what you think they are before you read
+further; the orange and purple arrows are drawn to help.
 
 <WarpEmbed state={SVD_AXES} />
 
@@ -75,8 +75,8 @@ that achieves the maximum is the one the orange arrow started along. In the same
 way σ₂ is the least any direction is stretched, and everything else lands
 between the two.
 
-Before moving on, make `M` stretch a great deal in one direction and hardly at
-all in another, and watch σ₁ climb while σ₂ falls. Then see whether you can get
+Before moving on, change the entries to make `M` stretch a great deal in one
+direction and hardly at all in another, and watch σ₁ climb while σ₂ falls. Then see whether you can get
 σ₁ and σ₂ to be equal to each other. The matrices that manage it form a family
 with a name, and I'll leave that one for the end.
 
@@ -91,71 +91,84 @@ whatever angle it needs to sit at. Two moves and we're finished.
 I think that is the right guess to make, and it's worth finding out exactly how
 it fails, because the repair turns out to be the whole idea.
 
-The panel below is that plan, assembled. `S` does the stretching, 2.5 along the
-horizontal and 1 along the vertical. `U` is a rotation. `C = U·S` applies `S`
-first and `U` second, so it stretches and then spins. There's an `svd(C)` row
-running underneath.
+The panel below is that plan, assembled. `S` does the stretching, `U` is a
+rotation, and `C = U·S` applies `S` first and `U` second — stretch, then spin.
 
-Change `U` and `S` however you like — any rotation, any two stretches. Watch the
-two directions `svd(C)` reports, and see if you can get them to point anywhere
-interesting.
+Two things want saying before you start pulling on it, because "any stretch, any
+rotation" is easy to misread.
+
+**The stretch is on the two sliders.** Drag `s1` and `s2` and watch `S` and the
+ellipse follow. Notice that `S` only ever reads `[s1 0; 0 s2]` — zeros off the
+diagonal, every time. That isn't a restriction I've imposed to protect a point;
+it is what "a stretch by fixed amounts along the horizontal and vertical" *means*.
+Put a number in one of those empty corners and you have some other
+transformation, not a stretch at all. So the row is written `S = diag(s1, s2)`,
+which builds the matrix from the two numbers and cannot come out any other shape.
+Every stretch there is sits somewhere on those two sliders.
+
+**The rotation is a matrix you may edit, but not every four numbers make a
+rotation.** A rotation reads `[c −s; s c]` with c² + s² = 1, which is why the
+entries here are 0.6 and 0.8. If you want a different one, `[0 −1; 1 0]` is a
+quarter turn and `[0.8 −0.6; 0.6 0.8]` is about 37°.
+
+Now go exploring. Sweep both sliders across their range, try the other rotations,
+and watch the two directions `svd(C)` reports.
 
 <WarpEmbed state={SVD_TWOSTEP} />
 
-They won't move. Whatever you type, `svd(C)` insists the stretched directions are
-`(1, 0)` and `(0, 1)` — the plain horizontal and vertical — and the line beneath
-them reads *Vᵀ spins 0°*, which is Warp telling you that a rotation you never
-asked for is sitting there doing nothing at all.
+They don't move. Whatever you do, the stretched directions come back as the
+horizontal and the vertical — `(1, 0)` and `(0, 1)`, give or take which gets
+listed first and which way the arrow points. (Push `s2` past `s1` and the two
+trade places, since σ₁ is by definition the larger of the pair, so the long axis
+becomes the vertical one. Still the axes.)
 
-The reason is worth saying slowly. A stretch by fixed amounts along the
-horizontal and vertical can only stretch the horizontal and the vertical; that
-is what it means for the stretch to be the first thing that happens. Rotating
-afterwards turns the finished ellipse, and it certainly changes where everything
-ends up, but it cannot reach back and change *which incoming directions* were the
-ones that got stretched. Stretch-then-spin therefore only ever produces matrices
-whose two special directions are the coordinate axes, and most matrices are not
-like that.
+There is a way to see this without reading any numbers at all, and I think it is
+the better way, because the two directions are sitting in plain view. **They are
+the gridlines.** The horizontal and vertical gridlines *are* the two directions
+being stretched — so watch the warped grid as you drag. It stays a grid of
+*rectangles*. Tilted, with cells longer one way than the other, but square at
+every corner. Try to shear it. Try to get the cells to lean over into
+parallelograms. You can't.
 
-Look back at the matrix we began with. Its σ₁ pointed along `(0.639, 0.77)`, a
-direction tilted some fifty degrees off the horizontal. No amount of fiddling
-with `U` and `S` will produce that matrix, and it isn't that we've chosen our
-numbers badly — the tilt is not a thing two moves can express.
+Why not is worth taking some time on, and it comes down to one sentence:
+perpendicular in, perpendicular out. The grid directions arrive at right angles.
+A stretch along those very directions leaves them at right angles, since it only
+makes them longer and shorter. And a rotation turns the whole picture without
+ever changing an angle inside it. There is no step in stretch-then-spin that
+could bend a right angle, so the corners survive all the way through.
 
-You can also see the limitation directly, without reading a single number, and I
-think this is the clearest way to feel it. Look at the **gridlines** in the panel.
-Whatever you type into `U` and `S`, the warped grid stays a grid of *rectangles*
-— tilted at some angle, with cells longer one way than the other, but always
-meeting at right angles. Try to shear it. Try to get the cells to lean into
-parallelograms. You can't, and the reason is the same one as before: the grid
-directions start out perpendicular, a stretch along those very directions leaves
-them perpendicular, and a rotation turns the whole picture without ever changing
-the angle between two lines. Perpendicular in, perpendicular out.
+That is also what the last line of the `svd(C)` row is reporting, and it is worth
+unpacking rather than glossing. Warp takes whatever matrix you hand it and splits
+it into a rotation, a stretch, and a rotation — the very three-step form we are
+working towards. For these matrices it keeps telling you that the *opening*
+rotation does nothing: `Vᵀ spins 0°`. It looks for a first rotation because there
+is always one to find, and it finds that there is no work for it to do, because
+the directions this matrix stretches were already lying on the axes when they
+arrived. Drag the sliders and that line sits at 0° (or jumps to a quarter turn
+when the two σ trade places). It never lands on an ordinary angle.
 
-That is a real restriction, because most matrices *do* lean their gridlines over.
-When we get to the three-move version in a moment, the first thing to look at is
-the grid: with a rotation in front, the cells can lean at any angle you please,
-and so the three-move version can reach matrices the two-move version cannot.
+If you would like the same fact as arithmetic: a 2×2 matrix is four independent
+numbers, while stretch-then-spin offers three adjustable ones — one angle and two
+stretches. We are exactly one short, and the missing one is the tilt of the
+directions being stretched.
 
-Two smaller angles on the same obstruction, if you'd like them. The first is
-simply to count. A 2×2 matrix is four independent entries; a rotation contributes
-one number, its angle, and a stretch contributes two, so stretch-then-spin offers
-three adjustable numbers where four are wanted. The one we're short of is exactly
-the tilt of the incoming axes.
-
-The second is the arithmetic behind those rectangular gridlines. In the panel `C`
-works out to `[1.5 −0.8; 2 0.6]`, whose columns are `(1.5, 2)` and `(−0.8, 0.6)`,
-and those two are at right angles — as they must be, since the columns of a matrix
-are just where î and ĵ land, and î and ĵ are the grid directions we've been
-watching. So consider the shear `[1 1; 0 1]`, whose columns `(1, 0)` and `(1, 1)`
-are plainly not perpendicular. It is out of reach, and so is very nearly every
-other matrix.
+And the smallest thing out of reach is the shear `[1 1; 0 1]`. Its columns are
+`(1, 0)` and `(1, 1)`, which are not perpendicular; and the columns of a matrix
+are just where the two grid directions land. Leaning gridlines, so no pair of
+slider settings and no rotation will ever produce it. Most matrices lean.
 
 ## Rotate, stretch, rotate
 
-The repair is more or less forced on us now. If the trouble is that the incoming
-axes are tilted while the stretch can only work along the coordinate axes, then
-we ought to rotate the plane first, bringing those tilted axes into line with the
-horizontal and vertical, and stretch only afterwards.
+Look again at what went wrong, because it tells us what to do. Nothing in
+stretch-then-spin ever gets to *choose* which directions are stretched. The
+stretch takes the axes, and it takes them for the dullest of reasons: the axes
+are what it was handed.
+
+So hand it something else. Put a rotation in *front* of the stretch, and give it
+one job — turn the plane so that the directions we actually want stretched are
+lying along the axes by the time the stretch arrives. The stretch is then free to
+be the plain axis-aligned thing it has to be, and the tilt we couldn't express
+before is expressed by the new rotation instead.
 
 Three moves, then. A rotation whose only job is to swing the two special
 directions onto the coordinate axes — the move the two-step plan was missing.
@@ -168,12 +181,12 @@ and `U` the closing rotation. Two angles and two stretches: four adjustable
 numbers for four matrix entries, which is precisely the right count. It's called
 the *singular value decomposition*.
 
-The panel below has one taken apart. `U` and `Vt` are rotations. `S` is the
-stretch, holding σ₁ = 3 in its top-left corner and σ₂ = 1 in its bottom-right,
-with zeros in the other two places — those two corner entries are the only
-numbers in the whole business that aren't part of a rotation, and it's worth
-remembering where they live, because we'll be editing them later. `C = U·S·Vt` is
-the three of them composed.
+The panel below has one taken apart. `U` and `Vt` are rotations. `S` is the same
+kind of stretch as before, written out in full this time rather than through
+`diag`: a 3 in the top-left corner, a 1 in the bottom-right, and zeros in the
+other two places. Those two corner entries are the only numbers in the whole
+business that aren't part of a rotation. And `C = U·S·Vt` is the three of them
+composed.
 
 Warp animates a product one factor at a time, right to left, so pressing play
 applies `Vt`, then `S`, then `U`. Before you press it, decide what each stage
@@ -274,21 +287,24 @@ plane down to very nearly nothing is, strictly speaking, invertible, and
 practically speaking a disaster: undoing it means dividing by that very nearly
 nothing.
 
-The panel below starts with σ₂ set to 0.2, so the ellipse is already a sliver,
-though `det(C)` reads 0.6 and `inv(C)` hands back a perfectly respectable
-inverse. Two things to do, in order.
+Since what we want is a dial, let's use one. The panel below is the full
+three-move decomposition again, with the two stretches back on sliders, and `s2`
+already down at 0.2 — so the ellipse is a sliver, though `det(C)` reads 0.6 and
+`inv(C)` still hands back a perfectly respectable inverse.
 
-Recall that `S` keeps the two stretches in its corners, σ₁ in the top-left and σ₂
-in the bottom-right. Begin, then, by clicking the **bottom-right entry of `S`** —
-the `0.2` — and typing `0` in its place. The ellipse collapses onto a line
-segment, and that segment is where the whole plane has gone: two dimensions
-crushed into one. `det(C)` drops to zero, `inv(C)` gives up, and `svd(C)` adds a
-line telling you the rank has fallen to 1.
+Drag `s2` slowly down to zero, and watch four things at once: the ellipse
+flattening, `det(C)` falling, `svd(C)`'s second value shrinking, and `inv(C)`
+holding on and then giving up. At the bottom the ellipse is a line segment, and
+that segment is where the whole plane has gone — two dimensions crushed into one.
+`svd(C)` adds a line to say the rank has fallen to 1.
 
-Then put the `0.2` back and try something less obvious. Type `30` over the `3` in
-`S`'s **top-left** entry, and `0.1` over the `0.2` in the **bottom-right**, so
-that σ₁ = 30 and σ₂ = 0.1. Before you look at `det(C)`, predict what it's going
-to say.
+The useful part is what happens *on the way down*, which a yes-or-no test cannot
+show you at all. Nothing sudden happens anywhere along the slider. The matrix
+just gets steadily worse to undo — watch the numbers inside `inv(C)` swell as you
+go — and the determinant slides towards zero alongside it.
+Then try something less obvious. Put `s2` back around 0.1 and drag `s1` up to 3,
+then type `s1 = 30` into its row to go further than the slider reaches. Before
+you look at `det(C)`, predict what it will say.
 
 <WarpEmbed state={SVD_RANK} height={500} />
 
@@ -316,7 +332,7 @@ Drag inside the panel to turn it around. The story holds in every particular:
 it out along three axes, and `U` turns the result. So does the arithmetic —
 multiply the three σ values and you get `det(M)`, which is 3, the volume of the
 ellipsoid over the volume of the ball. (The row rounds each σ to three decimals,
-so doing that multiplication by hand lands a whisker under 3.)
+so doing that multiplication by hand yields just under 3.)
 
 Then flatten it, which takes exactly one keystroke. Change the **middle entry of
 `M`'s bottom row** from `0` to `3`, so that the bottom row reads `1 3 1` — the
@@ -325,9 +341,12 @@ direction with it, and space obliges by losing one: σ₃ falls to exactly 0, th
 `svd` row reports rank 2, and the ellipsoid flattens into a disc. Three
 dimensions of space, living on a sheet.
 
-If you'd like to lose another, set the whole middle row to `1 1 0` as well. Every
-row is now a multiple of `1 1 0`, only one direction survives, and the disc
-becomes a line.
+If you'd like to lose another dimension, one row being redundant is no longer
+enough — you need every row to carry the same single direction. Set the middle
+row to `1 1 0`, matching the top one, and the bottom row to `2 2 0`. Now all
+three rows are multiples of `1 1 0`, so a single direction is all that survives:
+σ₂ joins σ₃ at zero, the `svd` row reports rank 1, and the disc collapses to a
+line.
 
 <WarpEmbed state={SVD_SPHERE} height={540} zoom={0.72} />
 
