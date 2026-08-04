@@ -23,6 +23,13 @@ export const ARTICLES: ArticleMeta[] = [
     status: "draft",
   },
   {
+    slug: "reading-a-matrix",
+    title: "Reading a Matrix",
+    subtitle: "What a 2×2 matrix is really made of",
+    date: "Summer 2026",
+    status: "draft",
+  },
+  {
     slug: "eigenvectors",
     title: "Eigenvectors",
     subtitle: "The vectors that refuse to turn",

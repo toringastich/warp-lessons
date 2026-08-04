@@ -99,6 +99,18 @@ export const DET_INVERT =
 export const DET_BLANK =
   "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
 
+// --- Reading a Matrix. Reuses the SVD scenes above; one scene of its own. ---
+
+/**
+ * The shear [1 1; 0 1], where eigen and svd visibly disagree: eigen reports
+ * λ = 1 repeated with one surviving direction, svd reports σ = 1.618 and 0.618.
+ * det = 1, matching σ₁·σ₂. The eigen row is shown: false on purpose — eigen and
+ * svd draw from the same orange/purple palette, so both sets of arrows at once
+ * are unreadable; its numbers still report.
+ */
+export const RM_SHEAR =
+  "eyJ2IjoxLCJtb2RlIjoiMmQiLCJkMiI6eyJyb3dzIjpbeyJrIjoibSIsIm4iOiJNIiwiYyI6WyIxIiwiMSIsIjAiLCIxIl19LHsiayI6ImUiLCJzIjoiY2lyY2xlKCkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJzdmQoTSkiLCJzaCI6dHJ1ZX0seyJrIjoiZSIsInMiOiJlaWdlbihNKSIsInNoIjpmYWxzZX0seyJrIjoiZSIsInMiOiJkZXQoTSkiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOjAsImciOnRydWV9LCJkMyI6eyJyb3dzIjpbeyJrIjoiZSIsInMiOiIiLCJzaCI6dHJ1ZX1dLCJhY3RpdmUiOm51bGx9fQ";
+
 // --- SVD. Needs Warp's svd() / circle() / sphere() primitives and its
 // --- gridlines-only matrix view (all shipped alongside this lesson).
 // --- All eight verified live against a local Warp build.

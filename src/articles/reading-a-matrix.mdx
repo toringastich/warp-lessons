@@ -1,0 +1,248 @@
+import WarpEmbed from "../WarpEmbed";
+import {
+  SVD_HOOK,
+  SVD_AXES,
+  RM_SHEAR,
+  SVD_DECOMP,
+  SVD_RANK,
+  SVD_BLANK,
+  WARP_URL,
+} from "../states";
+
+{/* Prose is synced with the vault script at
+    "_01 Projects/Germinate Internship/Warp/Lesson Scripts/Reading a Matrix — Script.md".
+
+    A tighter sibling of the singular-values piece, built on one sentence: a
+    matrix looks like four arbitrary numbers but is really two perpendicular
+    input directions, two stretch amounts, and two perpendicular output
+    directions. Every section delivers one clause of that and then stops.
+
+    Two things this one does that the longer piece doesn't, both aimed at the
+    SoME classroom criterion ("a struggling student whose life becomes easier"):
+    it separates singular values from eigenvalues explicitly, which is the
+    confusion students actually arrive with, and it makes the parameter count
+    the spine rather than an aside.
+
+    No captions on the embeds; the closing panel is a blank sandbox. */}
+
+A 2×2 matrix is four numbers in a box, and nothing about the way it is written
+suggests the four have anything to do with one another.
+
+> A matrix looks like four arbitrary numbers. It is really **two perpendicular
+> directions going in, two amounts of stretch, and two perpendicular directions
+> coming out.**
+
+Here is the picture that holds the whole argument — the unit circle, and where a
+matrix sends it.
+
+<WarpEmbed state={SVD_HOOK} />
+
+An ellipse. Change any entry you like and you get a *different* ellipse, but you
+get an ellipse: never a peanut, never an egg, never a shape fatter at one end than
+the other. Try for a while — the panel is yours, and the dashed outline shows
+where the circle started.
+
+Six things out of four numbers, then, and each of the six will turn out to be
+something you can point at. That refusal to be anything but an ellipse is the six
+things showing through: a matrix has so little freedom in
+what it can do to a circle precisely because all it can do to a circle is stretch
+it by two amounts along two perpendicular directions. There is nothing else in
+there to do.
+
+If you are meeting this in a linear algebra course it goes by the name *singular
+value decomposition*, and it is usually introduced from the algebra end. We won't
+need the algebra.
+
+## Four of the six are already on the screen
+
+Add one row, `svd(M)`, and Warp reports two numbers, σ₁ and σ₂, each with a
+direction attached.
+
+Before you look: the ellipse in front of you has a long direction and a short
+one, at right angles, with a definite length along each. Which of the six things
+would you guess σ₁ and σ₂ are?
+
+<WarpEmbed state={SVD_AXES} />
+
+They are the **two stretch amounts**. σ₁ is how far the ellipse reaches along its
+long axis and σ₂ along its short one — and because the circle we started with had
+radius 1 in every direction, those two lengths *are* how much the matrix
+stretched, in each of the two directions it stretches along.
+
+That is two of the six. The arrows hand you two more: the directions those axes
+point in are the **two output directions**, where the stretching ends up.
+
+The last two are hiding in plain sight. Drag the animation slider back to the
+beginning and look at the same two arrows *before* the matrix touched them. They
+are a perpendicular pair of unit vectors sitting on the circle. Those are the
+**two input directions** — the pair this matrix picks out, keeps perpendicular,
+and stretches.
+
+So the picture was showing you all six from the start. Scrub slowly back and
+forth a few times and watch the pair swing from the input directions to the
+output directions, growing by σ₁ and σ₂ as it goes. That motion is the entire
+content of the matrix.
+
+One word in there is load-bearing, and it turns up at both ends: *perpendicular*.
+Every matrix has some perpendicular pair that it sends to another perpendicular
+pair. You have just watched that happen, and you can watch it again for any
+matrix you care to type, which is not a proof but is a good deal more convincing
+than being told. It is also the fact that makes the next-but-one section come out
+even.
+
+## These are not eigenvalues
+
+If you have already met eigenvalues, now is the time to separate the two, because
+they are the most commonly confused pair in the subject and they answer different
+questions.
+
+Take the shear `[1 1; 0 1]`, the matrix every course reaches for, and ask it both.
+
+<WarpEmbed state={RM_SHEAR} />
+
+`eigen(M)` reports λ = 1, repeated, with one surviving direction, `(1, 0)`. Read
+that literally: there is exactly one line this matrix leaves in place, and along
+that line nothing changes length at all.
+
+`svd(M)` reports σ₁ = 1.618 and σ₂ = 0.618. Read that literally too: this matrix
+stretches some direction by more than half again, and squashes another to under
+two thirds.
+
+Both are true, and they are not in tension. They are answers to different
+questions:
+
+- **Eigenvalues** answer *which directions come back pointing along themselves,
+  and by what factor.* A shear has only one such direction and doesn't stretch
+  it, so λ = 1.
+- **Singular values** answer *how much does this thing stretch, at most and at
+  least.* A shear plainly distorts, so σ₁ > 1 > σ₂.
+
+Three more differences worth having straight. Eigenvalues can be negative, or
+complex, or absent — a rotation has no real eigenvectors whatsoever, while its
+singular values are simply 1 and 1. Singular values are lengths of ellipse axes,
+so there are always exactly two and neither is ever negative. And an
+eigen-direction comes back along its *own* line, involving one direction; a
+singular direction goes in along one line and comes out along another, involving
+two. That last difference is why our six things had to list inputs and outputs
+separately.
+
+The `eigen` row is switched off in the picture deliberately: Warp draws
+eigen-directions and singular directions from the same orange and purple, so both
+sets of arrows at once are unreadable. Click its dot if you want the eigen-line
+drawn, and notice it lies along neither σ arrow.
+
+One more thing to notice while you are here. `det(M)` reads 1, so this shear
+preserves area exactly — and σ₁ · σ₂ = 1.618 × 0.618 = 1 to match. Area is the
+product of the two stretches. A matrix can leave every area in the plane
+untouched and still distort space thoroughly.
+
+## Four numbers in, four numbers out
+
+Now the count, which is where the word *secretly* earns its keep.
+
+We have claimed six things. A matrix has only four numbers. So the six had better
+not be independent — and they aren't, for a reason that is easy to walk past.
+
+A single direction in the plane costs one number: an angle. A perpendicular
+*pair* of directions also costs one number, because once you have fixed the
+first, the second has nowhere left to go. Perpendicularity is what makes the pair
+cheap. So the bill reads:
+
+- two perpendicular input directions — **one** number
+- two stretch amounts — **two** numbers
+- two perpendicular output directions — **one** number
+
+Four. Exactly the four you were handed in the first place.
+
+And that count *is* the decomposition. Spin the plane so the input pair lies along
+the axes; stretch along the axes by σ₁ and σ₂; spin the result so the axes land
+where the output pair belongs. In symbols, `M = U·Σ·Vᵀ`, with `Vᵀ` the first spin,
+`Σ` the stretch and `U` the second.
+
+The panel below has one taken apart: `U` and `Vt` are rotations, `S` is the
+stretch with 3 and 1 in its corners and zeros elsewhere, and `C = U·S·Vt` is the
+three composed. Warp animates a product one factor at a time, right to left, so
+play applies `Vt`, then `S`, then `U`. Predict the first stage before you press
+it.
+
+<WarpEmbed state={SVD_DECOMP} height={520} />
+
+Stage one does nothing you can see, which is exactly right — a rotation carries
+the circle onto itself. It is spending its one number lining the input pair up
+with the axes, and you can catch it doing so: scrub to the very start, note that
+the two σ arrows sit at an angle, then scrub to the end of stage one and watch
+them arrive on the horizontal and the vertical. Stage two is the only step that
+changes the shape at all, and it is the simplest stretch there is: one number
+along x, one along y. Stage three spends its one number turning the finished
+ellipse to face the right way.
+
+Count what you just watched. One angle, two stretches, one angle. Nothing left
+over and nothing missing.
+
+There is one honest footnote. Those four numbers pin down the ellipse, but not
+quite whether space was turned over on the way: the second spin might also be a
+reflection. That is one extra yes-or-no rather than a fifth number, and it is
+exactly the sign of the determinant. Warp always writes the first spin as a plain
+rotation, so when a flip happens it appears in the second, and the `svd` row says
+so in as many words.
+
+So four arbitrary-looking numbers were never arbitrary. They were an angle, two
+lengths, and another angle, written in a coordinate system that hides all three.
+
+## What it buys you
+
+Since the determinant multiplies the two stretches together — det = ±σ₁·σ₂ — it
+cannot tell them apart. Sometimes telling them apart is the whole job.
+
+The panel below is the same three-step form with the two stretches on sliders.
+Drag `s2` slowly down towards zero.
+
+<WarpEmbed state={SVD_RANK} height={500} />
+
+Nothing sudden happens anywhere along the way. The matrix simply gets harder and
+harder to undo — watch the numbers inside `inv(C)` swell as you go — and at the
+bottom the ellipse is a line segment, the whole plane folded onto one dimension,
+`det(C)` at 0 and `inv(C)` giving up.
+
+Now the sharper version. Put `s2` back near 0.1, then type `s1 = 30` into its row
+to go past where the slider reaches, and look at `det(C)`. It reads 3 — the same
+determinant as a perfectly healthy stretch by 3 and 1, because 30 × 0.1 is as
+respectable a 3 as 3 × 1 ever was. The determinant cannot see the difference. σ₂
+reports it immediately, and the ratio σ₁/σ₂, here 300, is called the *condition
+number*: it is the quantity people who compute with matrices for a living
+actually keep an eye on.
+
+That is the practical reason for six things rather than one. *Is this matrix
+invertible* is a yes-or-no question and one number answers it. *How badly is this
+matrix going to behave* needs the two stretches kept apart.
+
+## Now it's yours
+
+A blank copy of Warp. Add a matrix from the **+** menu, then use an expression
+row's gear button to drop in `circle()` and `svd( )`. If Warp is new to you, the
+**Tutorial** button gives a short tour.
+
+Some things worth going after:
+
+- **Read a matrix you've never seen.** Type any four numbers, then read all six
+  things off the `svd` row. Check yourself: does σ₁ · σ₂ come out equal to
+  `det(M)`, up to sign?
+- **Find matrices whose input pair and output pair are the same two directions.**
+  Try `[2 1; 1 3]`, then `[1 2; 2 1]`, then invent your own. What do the ones
+  that work have in common? (This family has a name, and it is the reason
+  symmetric matrices are so much easier to handle than the rest.)
+- **Make σ₁ and σ₂ equal.** The ellipse becomes a circle again, so the matrix
+  stretches every direction by exactly the same amount. `[2 0; 0 2]` is the
+  obvious one — now find one whose entries aren't all 0 and 2.
+- **Ask `eigen` and `svd` about a rotation.** One of them has nothing real to
+  report and the other answers 1 and 1. Make sure you can say why each is right.
+- **Take it to 3D.** Switch modes, type a 3×3 matrix, and graph `sphere()` with
+  `svd(M)`. The circle becomes a sphere, the ellipse an ellipsoid, and six things
+  become nine — three perpendicular directions in, three stretches, three
+  perpendicular directions out.
+
+<WarpEmbed state={SVD_BLANK} height={560} tutorial />
+
+<p className="article-cta">
+  <a href={WARP_URL}>Open the full sandbox →</a>
+</p>

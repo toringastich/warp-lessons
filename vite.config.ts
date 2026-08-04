@@ -24,6 +24,7 @@ export default defineConfig({
         "cross-product": resolve(__dirname, "cross-product/index.html"),
         determinant: resolve(__dirname, "determinant/index.html"),
         svd: resolve(__dirname, "svd/index.html"),
+        "reading-a-matrix": resolve(__dirname, "reading-a-matrix/index.html"),
       },
     },
   },
