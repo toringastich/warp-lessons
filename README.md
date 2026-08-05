@@ -1,12 +1,12 @@
 # Warp Lessons
 
-**Live at [toringastich.github.io/warp-lessons/eigenvectors/](https://toringastich.github.io/warp-lessons/eigenvectors/)**
+**Live at [https://toringastich.github.io/warp-lessons/](https://toringastich.github.io/warp-lessons/)**
 
 Interactive **articles** built on [Warp](https://warp.us.com): essay-style
 exposition with live, manipulable Warp scenes embedded in the prose —
 ending at the open sandbox.
 
-The eigenvectors article is the entry for the **non-video category of
+The singular values article is the entry for the **non-video category of
 3Blue1Brown's Summer of Math Exposition 2026** (deadline Aug 15; no deploys
 during peer review Aug 16–30 — the entry URL must stay frozen).
 
@@ -38,3 +38,11 @@ npm run build
 ```
 
 Pushes to `main` deploy to GitHub Pages.
+
+## Copyright (c) 2026 Secant Labs. All rights reserved.
+
+This software is proprietary. No license, express or implied, is granted
+to use, copy, modify, merge, publish, distribute, sublicense, or sell
+copies of this software except under separate written agreement.
+
+For licensing inquiries: [your contact]
