@@ -45,4 +45,4 @@ This software is proprietary. No license, express or implied, is granted
 to use, copy, modify, merge, publish, distribute, sublicense, or sell
 copies of this software except under separate written agreement.
 
-For licensing inquiries: [your contact]
+For licensing inquiries: toringastich@gmail.com
